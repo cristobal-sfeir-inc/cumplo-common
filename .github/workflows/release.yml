@@ -1,0 +1,86 @@
+name: Release
+
+on:
+  push:
+    branches: [master]
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write # create tags & GitHub Releases
+  id-token: write # mint the OIDC token for Workload Identity Federation
+
+jobs:
+  publish:
+    name: Build & publish to Artifact Registry
+    runs-on: ubuntu-latest
+    env:
+      AR_LOCATION: us-central1
+      AR_PROJECT: cumplo-scraper
+      AR_REPOSITORY: cumplo-pypi
+      PACKAGE: cumplo-common
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # need full history/tags for the release
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: "2.4.1"
+          virtualenvs-in-project: true
+
+      - name: Install dependencies
+        run: poetry install --no-interaction
+
+      - name: Read version
+        id: version
+        run: echo "value=$(poetry version -s)" >> "$GITHUB_OUTPUT"
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.PUBLISH_SA }}
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Check whether this version is already published
+        id: check
+        run: |
+          if gcloud artifacts versions describe "${{ steps.version.outputs.value }}" \
+               --package="$PACKAGE" --repository="$AR_REPOSITORY" \
+               --location="$AR_LOCATION" --project="$AR_PROJECT" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Version ${{ steps.version.outputs.value }} already published — nothing to do."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build
+        if: steps.check.outputs.exists == 'false'
+        run: make build
+
+      - name: Publish to Artifact Registry
+        if: steps.check.outputs.exists == 'false'
+        env:
+          TWINE_USERNAME: oauth2accesstoken
+        run: |
+          TWINE_PASSWORD="$(gcloud auth print-access-token)" make publish
+
+      - name: Tag & GitHub Release
+        if: steps.check.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.version.outputs.value }}" \
+            --title "${{ steps.version.outputs.value }}" \
+            --generate-notes
