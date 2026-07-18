@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cumplo-common"
-version = "1.12.7"
+version = "1.12.10"
 description = "A one-stop library that centralizes the core logic and protects the domain of the Cumplo API project"
 authors = ["Cristobal Sfeir <hello@crisotbalsfeir.com>"]
 packages = [{ include = "cumplo_common" }]
