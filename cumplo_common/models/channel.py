@@ -12,8 +12,8 @@ from .base_model import BaseModel
 from .event_public import PublicEvent
 from .utils import StrEnum
 
-ALL_EVENTS = "all"
 ALL_EVENTS_TYPE = Literal["all"]
+ALL_EVENTS: ALL_EVENTS_TYPE = "all"
 
 
 class ChannelType(StrEnum):
