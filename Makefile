@@ -1,4 +1,4 @@
-include .env
+-include .env
 export
 
 # Runs linters
@@ -7,6 +7,21 @@ lint:
 	@ruff check --fix
 	@ruff format
 	@mypy --config-file pyproject.toml .
+
+# Runs the same quality gates as CI, non-mutating (local pre-flight)
+.PHONY: check
+check:
+	@poetry run ruff check .
+	@poetry run ruff format --check .
+	@poetry run mypy --config-file pyproject.toml .
+	@poetry run pytest
+
+# Bumps the version (single source of truth: pyproject.toml). Usage: make bump PART=patch|minor|major
+PART ?= patch
+.PHONY: bump
+bump:
+	@poetry version $(PART)
+	@echo "Bumped to $$(poetry version -s) — commit, open a PR; publish happens automatically on merge to master."
 
 
 # Builds the library
