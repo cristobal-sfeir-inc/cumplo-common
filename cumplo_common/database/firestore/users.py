@@ -2,6 +2,7 @@ from collections.abc import Generator
 from logging import getLogger
 from typing import Any
 
+import ulid
 from google.cloud.firestore_v1 import Client as FirestoreClient
 from google.cloud.firestore_v1 import CollectionReference
 
@@ -73,7 +74,7 @@ class UserCollection:
         if not user.exists or not (data := user.to_dict()):
             raise KeyError(f"User with ID {id_user} does not exist")
 
-        return User(id=user.id, **data)
+        return User(id=ulid.parse(user.id), **data)
 
     def list(self) -> Generator[User, None, None]:
         """
@@ -86,7 +87,7 @@ class UserCollection:
         logger.info("Getting all users from Firestore")
         for user in self.collection.stream():
             if data := user.to_dict():
-                yield User(id=user.id, **data)
+                yield User(id=ulid.parse(user.id), **data)
 
     def create(self, user: User) -> None:
         """
