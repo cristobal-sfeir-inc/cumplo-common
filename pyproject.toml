@@ -50,11 +50,9 @@ fix = true
 select = ["ALL"]
 ignore = [
   "ANN401",                              # allow typing.Any
-  "D100", "D101", "D102", "D105",        # module/class/method/magic-method docstrings not required
   "D107",                                # no docstring required in __init__
   "D212", "D203",                        # docstring-layout style choices
   "D104",                                # no docstring required in public package
-  "FBT003",                              # boolean positional value (Pydantic Field defaults)
   "G004",                                # allow f-strings in logging
   "S113",                                # allow requests without explicit timeout
   "DOC201", "DOC501", "DOC402",          # don't force return/raise/yield docs

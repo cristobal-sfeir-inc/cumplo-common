@@ -2,7 +2,6 @@
 
 # mypy: disable-error-code="misc, call-overload"
 
-
 from datetime import UTC, datetime
 
 import arrow
