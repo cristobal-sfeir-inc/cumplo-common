@@ -20,6 +20,7 @@ class Client:
     client: firestore.Client  # pyright: ignore[reportAttributeAccessIssue]
 
     def __new__(cls) -> Self:
+        """Return the singleton instance, creating it if necessary."""
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance._initialized = False
