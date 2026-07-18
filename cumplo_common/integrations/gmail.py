@@ -7,6 +7,7 @@ from email.mime.text import MIMEText
 from logging import getLogger
 from operator import itemgetter
 from pathlib import Path
+from typing import Any
 
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
@@ -48,7 +49,7 @@ class Gmail:
     """Integration with Gmail API."""
 
     @classmethod
-    def _authenticate(cls) -> build:
+    def _authenticate(cls) -> Any:
         """Authenticate with Gmail API."""
         credentials = service_account.Credentials.from_service_account_info(
             info=GMAIL_CREDENTIALS,
@@ -58,7 +59,7 @@ class Gmail:
         return build(serviceName="gmail", version="v1", credentials=credentials)
 
     @classmethod
-    def _get_message(cls, service: build, message_id: str) -> Message:
+    def _get_message(cls, service: Any, message_id: str) -> Message:
         """Get a message from Gmail."""
         message = service.users().messages().get(userId=GMAIL_USER_ID, id=message_id).execute()
         return Message(message)

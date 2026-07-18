@@ -7,12 +7,13 @@ services (orchestrator, herald, spotter, tailor, accountant).
 
 ## Build & Test
 - Install deps: `poetry install`
-- Run the full CI gate locally (non-mutating): `make check`
-  — equivalent to `poetry run ruff check .`, `ruff format --check .`, `mypy`, `pytest`
-- Auto-fix lint + format: `make lint`
+- Run tests: `poetry run pytest`
+- Auto-fix lint + format: `make format`
+- Verify code quality (CI gate): `make lint`
+- Full local CI simulation (lint + tests): `make check`
 - Build artifacts: `make build`
 
-Python 3.12, Poetry 2.4.x. Tests need no secrets — `tests/conftest.py` injects a test Fernet key.
+Python 3.13, Poetry 2.4.x. Tests need no secrets — `tests/conftest.py` injects a test Fernet key.
 
 ## Releasing (CI/CD)
 Releases are automated. **The version lives in exactly one place: `pyproject.toml`.**
@@ -25,7 +26,7 @@ To cut a release:
    version isn't already in the registry** (idempotent — non-release merges safely no-op),
    then creates the matching bare-numeric git tag + GitHub Release.
 
-- `.github/workflows/ci.yml` runs ruff / format / mypy / pytest on every PR (required check).
+- `.github/workflows/ci.yml` runs `make lint` (ruff / basedpyright / docformatter) + pytest on every PR (required check).
 - Auth to Artifact Registry is **keyless** via Workload Identity Federation (repo-scoped OIDC
   → `cumplo-pypi` service account). No keys or secrets are stored in GitHub.
 - Registry: `cumplo-pypi` (Python) in `us-central1`, project `cumplo-scraper`.
@@ -47,6 +48,6 @@ To cut a release:
   the package locally; CI does not use it (WIF instead).
 
 ## Before committing
-- [ ] `make check` passes
-- [ ] Version bumped (`make bump`) if this change should trigger a release
-- [ ] No secrets or credential files committed
+- [ ] Run `make format`, then `make lint` and ensure it passes.
+- [ ] Version bumped (`make bump`) if this change should trigger a release.
+- [ ] No secrets or credential files committed.

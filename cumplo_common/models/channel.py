@@ -59,7 +59,7 @@ class ChannelConfiguration(BaseModel, ABC):
 
 
 class IFTTTConfiguration(ChannelConfiguration):
-    type_: Literal[ChannelType.IFTTT] = ChannelType.IFTTT
+    type_: Literal[ChannelType.IFTTT] = ChannelType.IFTTT  # pyright: ignore[reportIncompatibleVariableOverride]
     key: str = Field(...)
     event: str = Field(...)
 
@@ -81,13 +81,13 @@ class IFTTTConfiguration(ChannelConfiguration):
 
 
 class WhatsappConfiguration(ChannelConfiguration):
-    type_: Literal[ChannelType.WHATSAPP] = ChannelType.WHATSAPP
+    type_: Literal[ChannelType.WHATSAPP] = ChannelType.WHATSAPP  # pyright: ignore[reportIncompatibleVariableOverride]
     phone_number: str = Field(pattern=PHONE_NUMBER_REGEX)
 
 
 class WebhookConfiguration(ChannelConfiguration):
     enabled_events: set[PublicEvent] | ALL_EVENTS_TYPE = Field(default_factory=set)
-    type_: Literal[ChannelType.WEBHOOK] = ChannelType.WEBHOOK
+    type_: Literal[ChannelType.WEBHOOK] = ChannelType.WEBHOOK  # pyright: ignore[reportIncompatibleVariableOverride]
     url: str = Field(..., max_length=2000)
 
     @field_validator("url", mode="before")

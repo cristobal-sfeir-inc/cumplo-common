@@ -21,7 +21,7 @@ class StrEnum(enum.StrEnum):
         return any(value.casefold() == item.name.casefold() for item in cls)
 
     @classmethod
-    def members(cls) -> Generator[Self, None, None]:
+    def members(cls) -> Generator[Self]:
         """
         Yield the enum members.
 
@@ -38,10 +38,10 @@ class EventModel(BaseModel):
 
 class Event(StrEnum):
     _name_: str
-    model: type[EventModel]
+    model: type[BaseModel]
     is_recurring: bool
 
-    def __new__(cls, value: str, model: type[EventModel], is_recurring: bool = False) -> Self:  # noqa: FBT001, FBT002
+    def __new__(cls, value: str, model: type[BaseModel], is_recurring: bool = False) -> Self:  # noqa: FBT001, FBT002
         """Create a new instance of the Enum with the given value and model."""
         obj = str.__new__(cls, value)
         obj.is_recurring = is_recurring

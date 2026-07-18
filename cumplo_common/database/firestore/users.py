@@ -76,7 +76,7 @@ class UserCollection:
 
         return User(id=ulid.parse(user.id), **data)
 
-    def list(self) -> Generator[User, None, None]:
+    def list(self) -> Generator[User]:
         """
         List all users.
 
