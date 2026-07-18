@@ -29,7 +29,7 @@ ruff = "^0.7.1"
 mypy = "^1.13.0"
 keyring = "^25.2.1"
 keyrings-google-artifactregistry-auth = "^1.1.2"
-twine = "^5.1.1"
+twine = "^6.1"
 docformatter = "^1.7.5"
 
 [build-system]
