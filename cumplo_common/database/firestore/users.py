@@ -1,3 +1,5 @@
+"""Firestore user and disabled-user collection accessors."""
+
 from collections.abc import Generator
 from logging import getLogger
 from typing import Any
@@ -14,6 +16,8 @@ logger = getLogger(__name__)
 
 
 class UserCollection:
+    """Firestore collection accessor for active users."""
+
     collection: CollectionReference
     keys: CollectionReference
     emails: CollectionReference
@@ -157,6 +161,8 @@ class UserCollection:
 
 
 class DisabledCollection(UserCollection):
+    """Firestore collection accessor for disabled users."""
+
     def __init__(self, client: FirestoreClient, *args: Any, **kwargs: Any) -> None:
         super().__init__(client, *args, **kwargs)
         self.collection = client.collection(DISABLED_COLLECTION)

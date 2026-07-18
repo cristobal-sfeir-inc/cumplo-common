@@ -1,3 +1,5 @@
+"""FastAPI middleware for decoding Pub/Sub push messages."""
+
 import json
 from base64 import b64decode
 from collections.abc import Awaitable, Callable
@@ -32,6 +34,8 @@ class PubSubEvent(BaseModel):
 
 
 class PubSubMiddleware(BaseHTTPMiddleware):
+    """Middleware that parses Pub/Sub push payloads and stores the event on request state."""
+
     async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:  # noqa: PLR6301
         """
         Middleware to handle PubSub messages.

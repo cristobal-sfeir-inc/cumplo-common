@@ -1,3 +1,5 @@
+"""FastAPI dependency for authenticating incoming requests."""
+
 from http import HTTPStatus
 from logging import getLogger
 from typing import Annotated

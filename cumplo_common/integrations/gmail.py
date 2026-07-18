@@ -1,3 +1,5 @@
+"""Integration wrapper for the Gmail API."""
+
 import base64
 import re
 from collections import UserDict

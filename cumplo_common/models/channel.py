@@ -1,3 +1,5 @@
+"""Channel configuration models for user notification channels."""
+
 import ipaddress
 from abc import ABC
 from typing import Any, Literal, Self
@@ -17,6 +19,8 @@ ALL_EVENTS: ALL_EVENTS_TYPE = "all"
 
 
 class ChannelType(StrEnum):
+    """Supported notification channel types."""
+
     WHATSAPP = "WHATSAPP"
     WEBHOOK = "WEBHOOK"
     IFTTT = "IFTTT"
@@ -26,7 +30,7 @@ class ChannelConfiguration(BaseModel, ABC):
     """Base class for channel configuration."""
 
     id: ulid.ULID = Field(...)
-    enabled: bool = Field(True)
+    enabled: bool = Field(default=True)
     type_: ChannelType = Field(...)
     enabled_events: set[PublicEvent] | ALL_EVENTS_TYPE = Field(ALL_EVENTS)
     disabled_events: set[PublicEvent] = Field(default_factory=set)
@@ -59,6 +63,8 @@ class ChannelConfiguration(BaseModel, ABC):
 
 
 class IFTTTConfiguration(ChannelConfiguration):
+    """IFTTT webhook channel configuration."""
+
     type_: Literal[ChannelType.IFTTT] = ChannelType.IFTTT  # pyright: ignore[reportIncompatibleVariableOverride]
     key: str = Field(...)
     event: str = Field(...)
@@ -81,11 +87,15 @@ class IFTTTConfiguration(ChannelConfiguration):
 
 
 class WhatsappConfiguration(ChannelConfiguration):
+    """WhatsApp channel configuration."""
+
     type_: Literal[ChannelType.WHATSAPP] = ChannelType.WHATSAPP  # pyright: ignore[reportIncompatibleVariableOverride]
     phone_number: str = Field(pattern=PHONE_NUMBER_REGEX)
 
 
 class WebhookConfiguration(ChannelConfiguration):
+    """Webhook channel configuration."""
+
     enabled_events: set[PublicEvent] | ALL_EVENTS_TYPE = Field(default_factory=set)
     type_: Literal[ChannelType.WEBHOOK] = ChannelType.WEBHOOK  # pyright: ignore[reportIncompatibleVariableOverride]
     url: str = Field(..., max_length=2000)

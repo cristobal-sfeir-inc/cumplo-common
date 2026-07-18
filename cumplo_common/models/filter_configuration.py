@@ -1,3 +1,5 @@
+"""Filter configuration models for funding-request filtering."""
+
 from decimal import Decimal
 from json import loads
 from typing import Any, Self
@@ -51,7 +53,7 @@ class FilterConfiguration(BaseModel):
     minimum_irr: Decimal | None = Field(None, ge=0)
     minimum_monthly_profit_rate: Decimal | None = Field(None, ge=0)
 
-    ignore_dicom: bool = Field(False)
+    ignore_dicom: bool = Field(default=False)
     maximum_debtors: PositiveInt | None = Field(None)
     portfolio: list[PortfolioFilterConfiguration] = Field(default_factory=list)
 

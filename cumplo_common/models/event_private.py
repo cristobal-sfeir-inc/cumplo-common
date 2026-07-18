@@ -1,3 +1,5 @@
+"""Internal (private) event definitions."""
+
 from cumplo_common.models.funding_request import FundingRequest
 from cumplo_common.models.investment import Investment
 from cumplo_common.models.movement import Movement

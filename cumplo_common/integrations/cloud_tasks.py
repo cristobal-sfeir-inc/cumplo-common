@@ -1,3 +1,5 @@
+"""Integration wrapper for Google Cloud Tasks."""
+
 import json
 from datetime import datetime
 from typing import Annotated

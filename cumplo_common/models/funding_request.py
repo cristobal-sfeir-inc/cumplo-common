@@ -1,3 +1,5 @@
+"""Funding request domain model with computed financial metrics."""
+
 from decimal import Decimal
 from functools import cached_property
 from math import ceil
@@ -16,19 +18,26 @@ from .utils import StrEnum
 
 
 class DurationUnit(StrEnum):
+    """Unit for expressing a funding-request duration."""
+
     MONTH = "MONTH"
     DAY = "DAY"
 
 
 class Duration(BaseModel):
+    """Duration value with its unit for a funding request."""
+
     unit: DurationUnit = Field(...)
     value: int = Field(...)
 
     def __str__(self) -> str:
+        """Return a human-readable duration string."""
         return f"{self.value} {self.unit.lower()}s"
 
 
 class FundingRequest(BaseModel):
+    """Full funding-request record with computed financial metrics."""
+
     id: int = Field(...)
     amount: int = Field(...)
     irr: Decimal = Field(...)
