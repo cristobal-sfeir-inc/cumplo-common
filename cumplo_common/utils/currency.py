@@ -1,3 +1,5 @@
+"""Currency formatting utilities."""
+
 import babel.numbers
 
 from cumplo_common.models import Currency

@@ -1,5 +1,6 @@
-# mypy: disable-error-code="misc, call-overload"
+"""User domain model with balance, portfolio, and session sub-models."""
 
+# mypy: disable-error-code="misc, call-overload"
 
 from datetime import UTC, datetime
 
@@ -25,6 +26,8 @@ from .utils import EventModel
 
 
 class Balance(BaseModel):
+    """User cash balance with expiry tracking."""
+
     updated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     amount: int = Field()
 
@@ -35,6 +38,8 @@ class Balance(BaseModel):
 
 
 class InvestmentPortfolio(BaseModel):
+    """Cached snapshot of a user's investments."""
+
     updated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     investments: dict[int, Investment] = Field(default_factory=dict)
 
@@ -45,10 +50,12 @@ class InvestmentPortfolio(BaseModel):
 
 
 class User(BaseModel):
+    """Cumplo platform user with preferences, credentials, and portfolio."""
+
     id: ulid.ULID = Field(...)
     api_key: str = Field(...)
     email: str = Field(...)
-    is_admin: bool = Field(False)
+    is_admin: bool = Field(default=False)
     name: str = Field(..., max_length=30)
     credentials: Credentials | None = Field(None)
     expiration_minutes: PositiveInt = Field(DEFAULT_EXPIRATION_MINUTES)

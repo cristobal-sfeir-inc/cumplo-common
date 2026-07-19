@@ -1,3 +1,5 @@
+"""Integration wrapper for Google Cloud Pub/Sub."""
+
 import json
 
 from google.cloud.pubsub import PublisherClient

@@ -1,3 +1,5 @@
+"""Investment domain model."""
+
 from datetime import datetime
 
 from pydantic import Field
@@ -8,6 +10,8 @@ from .funding_request import Duration
 
 
 class Investment(BaseModel):
+    """Single investment record on a funding request."""
+
     id: int = Field(...)
     id_funding_request: int = Field(...)
     credit_type: CreditType = Field(...)

@@ -1,3 +1,5 @@
+"""FastAPI dependency for authorizing admin-only requests."""
+
 from http import HTTPStatus
 
 from fastapi.exceptions import HTTPException

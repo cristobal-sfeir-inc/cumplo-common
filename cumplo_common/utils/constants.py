@@ -1,3 +1,5 @@
+"""Environment-sourced constants used across the library."""
+
 import json
 import os
 

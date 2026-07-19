@@ -1,3 +1,5 @@
+"""Public event definitions."""
+
 from cumplo_common.models.funding_request import FundingRequest
 
 from .utils import Event
