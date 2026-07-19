@@ -36,6 +36,12 @@ jobs:
           path: .venv
           key: venv-${{ runner.os }}-py3.12-${{ hashFiles('poetry.lock') }}
 
+      - name: Refresh lock file metadata
+        # Regenerates only metadata (python-versions, content-hash) to match the
+        # current pyproject.toml; package versions are unchanged (--no-update).
+        # Remove this step once the Python constraint is back on 3.13.
+        run: poetry lock --no-update --no-interaction
+
       - name: Install dependencies
         run: poetry install --no-interaction
 
