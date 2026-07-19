@@ -6,7 +6,7 @@ authors = ["Cristobal Sfeir <hello@crisotbalsfeir.com>"]
 packages = [{ include = "cumplo_common" }]
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.12"
 pydantic = "^2.1.1"
 arrow = "^1.2.3"
 firebase-admin = "^6.2.0"
