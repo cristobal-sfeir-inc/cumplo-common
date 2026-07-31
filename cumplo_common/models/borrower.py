@@ -1,3 +1,5 @@
+"""Borrower domain model."""
+
 from datetime import datetime
 
 from pydantic import Field
@@ -7,6 +9,8 @@ from .portfolio import Portfolio
 
 
 class Borrower(BaseModel):
+    """Borrower profile for a funding request."""
+
     id: int | None = Field(None)
     name: str | None = Field(None)
     economic_sector: str | None = Field(None)

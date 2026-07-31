@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
@@ -31,19 +31,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .venv
-          key: venv-${{ runner.os }}-py3.12-${{ hashFiles('poetry.lock') }}
+          key: venv-${{ runner.os }}-py3.13-${{ hashFiles('poetry.lock') }}
 
       - name: Install dependencies
         run: poetry install --no-interaction
 
-      - name: Ruff lint
-        run: poetry run ruff check .
-
-      - name: Ruff format check
-        run: poetry run ruff format --check .
-
-      - name: Mypy
-        run: poetry run mypy --config-file pyproject.toml .
+      - name: Lint
+        run: make lint
 
       - name: Pytest
         run: poetry run pytest

@@ -1,3 +1,5 @@
+"""Text cleaning and masking utilities."""
+
 import string
 import unicodedata
 

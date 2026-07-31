@@ -1,3 +1,5 @@
+"""User credentials model with encrypted password handling."""
+
 import re
 from typing import Any
 
@@ -10,6 +12,8 @@ from .base_model import BaseModel
 
 
 class Credentials(BaseModel):
+    """Cumplo user credentials with encrypted password storage."""
+
     email: str = Field(pattern=r"^[\w\.\-\+]+@([\w\-]+\.)+[\w\-]{2,4}$")
     password: str = Field()
     user_id: str = Field(...)

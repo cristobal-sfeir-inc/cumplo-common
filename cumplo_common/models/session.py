@@ -1,3 +1,5 @@
+"""Session domain model."""
+
 from datetime import datetime
 
 import arrow
@@ -9,6 +11,8 @@ from .base_model import BaseModel
 
 
 class Session(BaseModel):
+    """Authenticated session token with expiry."""
+
     token: str = Field(...)
     date: datetime = Field(default_factory=lambda: arrow.utcnow().datetime)
 

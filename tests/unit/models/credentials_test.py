@@ -1,5 +1,6 @@
 import pytest
 from cryptography.fernet import Fernet
+from pydantic import ValidationError
 
 from cumplo_common.models.credentials import Credentials
 from cumplo_common.utils.constants import PASSWORDS_ENCRYPTION_KEY
@@ -84,7 +85,7 @@ class TestCredentials:
 
     def test_invalid_credentials(self) -> None:
         """Test that invalid credentials raise appropriate errors."""
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError, match="email"):
             Credentials(
                 email="not_an_email",
                 password=PASSWORD,
@@ -93,7 +94,7 @@ class TestCredentials:
                 company_nin="1234567890",
             )
 
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError, match="password"):
             Credentials(
                 email="test@example.com",
                 password="",
@@ -135,7 +136,7 @@ class TestCredentials:
         ]
 
         for email in invalid_emails:
-            with pytest.raises(ValueError):
+            with pytest.raises(ValidationError, match="email"):
                 Credentials(
                     email=email,
                     password=PASSWORD,

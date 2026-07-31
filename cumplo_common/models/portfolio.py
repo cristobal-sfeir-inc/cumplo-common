@@ -1,3 +1,5 @@
+"""Portfolio domain models with grouped category breakdowns."""
+
 from decimal import Decimal
 from functools import cached_property
 
@@ -40,6 +42,8 @@ class PortfolioGroup(BaseModel):
 
 
 class Portfolio(BaseModel):
+    """Aggregated portfolio breakdown by category."""
+
     cured: PortfolioGroup = Field(...)
     active: PortfolioGroup = Field(...)
     overdue: PortfolioGroup = Field(...)

@@ -1,19 +1,25 @@
 -include .env
 export
 
-# Runs linters
+# Verifies code quality — check-only, no fixes (same command as CI)
 .PHONY: lint
 lint:
-	@ruff check --fix
-	@ruff format
-	@mypy --config-file pyproject.toml .
+	@poetry run ruff check --no-fix .
+	@poetry run ruff format --check .
+	@poetry run basedpyright
+	@poetry run docformatter --check --recursive .
 
-# Runs the same quality gates as CI, non-mutating (local pre-flight)
+# Applies all auto-fixes (ruff + docformatter)
+.PHONY: format
+format:
+	@poetry run ruff format .
+	@poetry run ruff check --fix .
+	@poetry run docformatter --in-place --recursive .
+
+# Runs the full local CI gate (lint + tests)
 .PHONY: check
 check:
-	@poetry run ruff check .
-	@poetry run ruff format --check .
-	@poetry run mypy --config-file pyproject.toml .
+	@make lint
 	@poetry run pytest
 
 # Bumps the version (single source of truth: pyproject.toml). Usage: make bump PART=patch|minor|major

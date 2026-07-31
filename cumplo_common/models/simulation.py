@@ -1,3 +1,5 @@
+"""Simulation and installment models for funding-request projections."""
+
 from datetime import datetime
 from decimal import Decimal
 from functools import cached_property
@@ -10,6 +12,8 @@ from .base_model import BaseModel
 
 
 class SimulationInstallment(BaseModel):
+    """Single installment in a funding-request simulation."""
+
     amount: int = Field(...)
     capital: int = Field(...)
     exit_fee: int = Field(...)
@@ -18,6 +22,8 @@ class SimulationInstallment(BaseModel):
 
 
 class Simulation(BaseModel):
+    """Simulation result for a funding request."""
+
     exit_fee: int = Field(...)
     upfront_fee: int = Field(...)
     net_returns: int = Field(...)

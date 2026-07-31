@@ -1,3 +1,5 @@
+"""Notification domain model."""
+
 from datetime import datetime
 from re import fullmatch
 from typing import Self
@@ -12,6 +14,8 @@ from .event_public import PublicEvent
 
 
 class Notification(BaseModel):
+    """Notification sent to a user for a recurring event."""
+
     id: str = Field(...)
     event: PublicEvent = Field(...)
     date: datetime = Field(...)
