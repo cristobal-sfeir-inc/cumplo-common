@@ -76,8 +76,19 @@ jobs:
         run: |
           TWINE_PASSWORD="$(gcloud auth print-access-token)" make publish
 
+      - name: Check whether GitHub Release exists
+        id: release_check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! gh release view "${{ steps.version.outputs.value }}" >/dev/null 2>&1; then
+            echo "release_missing=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "release_missing=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Tag & GitHub Release
-        if: steps.check.outputs.exists == 'false'
+        if: steps.check.outputs.exists == 'false' || steps.release_check.outputs.release_missing == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
